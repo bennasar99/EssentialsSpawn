@@ -20,6 +20,7 @@ What can you disable in spawn?
 
 All is configurable (just go to config.lua)
 
+Yo can also use your own spawn enter/left messages (config.lua)
 Permissions
 ---
 espawn.bypass
