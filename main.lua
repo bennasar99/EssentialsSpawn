@@ -45,35 +45,22 @@ function OnDisable()
 end
 
 function IsInSpawn(X, Y, Z, WorldName)
-	-- Function taken from SpawnProtect bearbin's plugin.
-	-- Get Spawn Coordinates for the World
-	local World = cRoot:Get():GetWorld(WorldName)
-	local spawnx = World:GetSpawnX()
-	local spawny = World:GetSpawnY()
-	local spawnz = World:GetSpawnZ()
-	
-	-- Get protection radius for the world.
-	local protectRadius = GetSpawnProtection(WorldName)
-	
-	if protectRadius == -1 then
-		-- There is no spawn for this world, so the player can't be in it.
-		return false
-	end
-
-	-- Check if the specified coords are in the spawn.
-	if not ((X <= (spawnx + protectRadius)) and (X >= (spawnx - protectRadius))) then
-		return false -- Not in spawn area.
-	end
-	if not ((Y <= (spawny + protectRadius)) and (Y >= (spawny - protectRadius))) then 
-		return false -- Not in spawn area.
-	end
-	if not ((Z <= (spawnz + protectRadius)) and (Z >= (spawnz - protectRadius))) then 
-		return false -- Not in spawn area.
-	end
-		
-	-- If they're not not in spawn, they must be in spawn!
-	return true
-
+    local World = cRoot:Get():GetWorld(WorldName)
+    local SpawnLoc = Vector3d(World:GetSpawnX(), World:GetSpawnY(), World:GetSpawnZ())
+    local PlayerLoc = Vector3d(X, Y, Z)
+     
+    -- Get protection radius for the world.
+    local protectRadius = GetSpawnProtection(WorldName)
+     
+    if (protectRadius == -1) then
+        -- There is no spawn for this world, so the player can\'t be in it.
+        return false
+    end
+ 
+    if ((SpawnLoc - PlayerLoc):Length() <= protectRadius) then
+        return true
+    end
+    return false
 end
 
 function GetSpawnProtection(WorldName)
